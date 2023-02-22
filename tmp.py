@@ -1,15 +1,18 @@
-coord = [1, 2, 3]
-clearness = [7, 11, 10]
+coord = [1, 2, 3, 4]
+clearness = [7, 11, 10, 40]
 
-clearest = 0
+i2 = 0 
 i = 0
-while i < len(clearness):
-    if clearness[i] > clearness[clearest]:
-        print(f"{clearness[i]} is larger than {clearness[clearest]}")
-        clearest = i
-    else:
-        print(f"{clearness[i]} <= {clearness[clearest]}")
-    
-    i += 1
 
-print(coord[clearest])
+
+
+
+
+for i in range(len((clearness))):
+    
+    if clearness[i] > clearness[i2]:
+        print(f"{clearness[i]} is larger than {clearness[i2]}")
+        i2 = i
+    
+print(coord[i2])
+
