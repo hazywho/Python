@@ -66,9 +66,9 @@ def run():
         return_value, image = camera.read()
         cv2.imwrite(os.path.join(path,(str(rotation)+".jpg")), image)
         del(camera)
-        mymotortest.motor_go(False, "Full", 10, 0.005, False, 0.01)
+        mymotortest.motor_go(False, "Full", 5, 0.005, False, 0.01)
         rotation = rotation + 1 
-    mymotortest.motor_go(True, "Full", 170, 0.005, False, 0.05)
+    mymotortest.motor_go(True, "Full", 11, 0.005, False, 0.05)
 
     # In[4]:
 
