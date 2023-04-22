@@ -2,7 +2,7 @@ string = "^_"
 loc = 0
 times = 0
 while loc < len(string):
-    if string[loc] == "_" and string[loc+1] != "^" or string[loc] == "^" and string[loc+1] != "_" :
+    if string[loc-1] == "_" and string[loc] != "^":
         string = string[:loc] + "^" + string[loc:]
         print(string)
         times +=1
