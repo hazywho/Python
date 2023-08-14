@@ -1,5 +1,8 @@
-n = 4
-words = ["word", "localization", "internationalization", "pneumonoultramicroscopicsilicovolcanoconiosis"]
+n = int(input())
+words = []
+for times in range(n):
+    words.append(input())
+
 
 
 for string in words:
