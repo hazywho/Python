@@ -56,20 +56,6 @@ gpt_functions = [
         }
     },
     {
-        "name": "find_genre_by_name",
-        "description": "find out the genre of a book said by the user, for example: What is the genre of The Name of the Rose (answer = Mystery/Historical Fiction), What is the genre of The Divine Comedy? (answer = Epic Poetry)",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "Book name, e.g. Dystopian Fiction, Classic Fiction, Epic Poetry"
-                }
-            },
-            "required": ["name"]
-        }
-    },
-    {
         "name": "get_rating_by_name",
         "description": "find out the rating of a book said by the user, for example: What is the popularity rating of google? (answer = number 1), What is the popularity rating of youtube? (answer = second most popular)",
         "parameters": {
