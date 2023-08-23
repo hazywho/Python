@@ -1,8 +1,9 @@
 import openai
 import gradio as gr
 import json
-from List import  Finder, gpt_functions
-from Prompt import prompt
+from books import  BookFinder
+from prompt import prompt
+from gpt_functions import gpt_functions
 
 openai.api_key = "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"
 
@@ -12,7 +13,11 @@ messages = [
 ]
 
 switch_dict = {
-    "find_webstie_name_by_ranking": Finder.find_website_name_by_ranking
+    "find_book_location_by_name": BookFinder.get_book_location_by_name,
+    "list_book_by_genre": BookFinder.list_book_by_genre,
+    "list_book_by_rating": BookFinder.list_book_by_rating,
+    "find_rating_by_name": BookFinder.find_rating_by_name,
+    "find_genre_by_name": BookFinder.find_genre_by_name
 }
 
 def case_default(json_input):
