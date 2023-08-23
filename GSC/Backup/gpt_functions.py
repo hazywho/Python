@@ -1,49 +1,49 @@
 gpt_functions = [
     {
-        "name": "find_book_location_by_name",
-        "description": "Get the book location given the book name. e.g. where can i find the book, where is the location, i am looking for",
+        "name": "get_web_link_by_name",
+        "description": "Get the link of the websites' name one searched for, for example: what is the link for google? (answer = google.com)",
         "parameters": {
             "type": "object",
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "Book names, e.g. Frankenstein, The Chronicles of Narnia"
+                    "description": "Website names, eg: google, youtube, etc"
                 }
             },
             "required": ["name"]
         }
     },
     {
-        "name": "list_book_by_rating",
-        "description": "lists the book names of the same rating or similar rating. e.g. can i get the names of the books with the rating of (x), what are the good rating books you have, recommend me the highest rating book you have.",
+        "name": "get_web_by_rating",
+        "description": "Gets the name of the website by its rating, for example: what is the most popular website? (answer = google.com), what is the number one rated website? (answer = google.com), what is the number 1 website? (answer = google.com)",
         "parameters": {
             "type": "object",
             "properties": {
                 "rating": {
-                    "type": "string",
-                    "description": "Book ratings, e.g. 1, 2, 3, 4, 5."
+                    "type": "integer",
+                    "description": "Website ratings, e.g. 1, 2, 3, 4, 5, or first rated, second rated, third rated."
                 }
             },
             "required": ["rating"]
         }
     },
     {
-        "name": "list_book_by_genre",
-        "description": "lists the book names of the same genre. e.g. do you have books with the ganre_____, what are the books with the genre____, recommend books with the genre____",
+        "name": "get_web_by_usage",
+        "description": "Gets the name of the website by its usage, for exmple, I want to watch movies online, what websites should I visit? (answer = netflix.com), I want to watch videos online for free, which websites do you recommend me to visit? (answer = youtube.com)",
         "parameters": {
             "type": "object",
             "properties": {
-                "genre": {
+                "usage": {
                     "type": "string",
-                    "description": "Book genre, e.g. Dystopian Fiction, Classic Fiction, Epic Poetry"
+                    "description": "Website usage, for example, google = makes information searching easier and more accessable, youtube = makes it easy to watch online videos"
                 }
             },
-            "required": ["genre"]
+            "required": ["usage"]
         }
     },
     {
-        "name": "find_rating_by_name",
-        "description": "find out the rating of a book said by the user, for example: What is the rating of Harry Potter and the Sorcerer's Stone? (answer = 4.8), What is the rating of To Kill a Mockingbird? (answer = 5)",
+        "name": "get_usage_by_web",
+        "description": "Gets the usage of the website, for exmple, What is the usage of netflix? (answer = watch movies online), What is the usage of youtube? (answer = watch videos online for free), What is the function of google? (answer = to help people in searching information)",
         "parameters": {
             "type": "object",
             "properties": {
@@ -64,6 +64,20 @@ gpt_functions = [
                 "name": {
                     "type": "string",
                     "description": "Book name, e.g. Dystopian Fiction, Classic Fiction, Epic Poetry"
+                }
+            },
+            "required": ["name"]
+        }
+    },
+    {
+        "name": "get_rating_by_name",
+        "description": "find out the rating of a book said by the user, for example: What is the popularity rating of google? (answer = number 1), What is the popularity rating of youtube? (answer = second most popular)",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the website, for example, google, youtube, netflix"
                 }
             },
             "required": ["name"]

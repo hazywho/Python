@@ -1,7 +1,7 @@
 import openai
 import gradio as gr
 import json
-from books import  BookFinder
+from books import  WebFinder
 from prompt import prompt
 from gpt_functions import gpt_functions
 
@@ -13,11 +13,12 @@ messages = [
 ]
 
 switch_dict = {
-    "find_book_location_by_name": BookFinder.get_book_location_by_name,
-    "list_book_by_genre": BookFinder.list_book_by_genre,
-    "list_book_by_rating": BookFinder.list_book_by_rating,
-    "find_rating_by_name": BookFinder.find_rating_by_name,
-    "find_genre_by_name": BookFinder.find_genre_by_name
+    "get_web_link_by_name": WebFinder.get_web_link_by_name,
+    "get_web_by_rating": WebFinder.get_web_by_rating,
+    "get_web_by_usage": WebFinder.get_web_by_usage,
+    "get_usage_by_web": WebFinder.get_usage_by_web,
+    "get_rating_by_name": WebFinder.get_rating_by_name,
+
 }
 
 def case_default(json_input):
@@ -32,6 +33,7 @@ def chat_completion(messages):
     )
 
 def chatbot(user_input):
+    user_input = user_input.lower()
     if user_input:
         messages.append({"role": "user", "content": user_input})
         for index, msg in enumerate(messages):
