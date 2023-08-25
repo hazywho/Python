@@ -41,6 +41,7 @@ websites = [
         "link": "https://www.baidu.com",
         "about": "search engine",
         "usage": "search up information",
+
         "rating": 6
     },
     {
@@ -49,7 +50,22 @@ websites = [
         "about": "competitive coding site",
         "usage": "improve coding skills",
         "rating": 7
+    },
+    {
+        "name": "wikipedia",
+        "link": "https://www.wikipedia.org",
+        "about": "information library",
+        "usage": "learn new information",
+        "rating": 8
+    },
+    {
+        "name": "quora",
+        "link": "https://www.quora.com",
+        "about": "information library",
+        "usage": "learn new information",
+        "rating": 9
     }
+
 ]
 
 class WebFinder:
@@ -96,3 +112,4 @@ class WebFinder:
             if web["name"] == name["name"]:
                 return {"book_name": web["name"], "rating": web["rating"]}
         return None
+        
