@@ -1,7 +1,7 @@
 import openai
 import gradio as gr
 import json
-from books import  WebFinder
+from weblists import  WebFinder
 from prompt import prompt
 from gpt_functions import gpt_functions
 
@@ -16,7 +16,7 @@ switch_dict = {
     "get_web_link_by_name": WebFinder.get_web_link_by_name,
     "get_web_by_rating": WebFinder.get_web_by_rating,
     "get_usage_by_web": WebFinder.get_usage_by_web,
-    "get_rating_by_name": WebFinder.get_rating_by_name,
+    "get_rating_by_name": WebFinder.get_rating_by_name
 }
 
 def case_default(json_input):
