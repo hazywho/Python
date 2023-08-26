@@ -95,14 +95,6 @@ class WebFinder:
             if web["rating"] == rating["rating"]:
                 return {"book_name": web["rating"], "name": web["name"]}
         return None
-
-    @staticmethod
-    def get_web_by_usage(usage):
-        # Search for book's location by rating
-        for web in websites:
-            if web["usage"] == usage["usage"]:
-                return {"book_name": web["usage"], "name": web["name"]}
-        return None
     
     @staticmethod
     def get_usage_by_web(webs):

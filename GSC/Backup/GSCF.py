@@ -17,7 +17,6 @@ switch_dict = {
     "get_web_by_rating": WebFinder.get_web_by_rating,
     "get_usage_by_web": WebFinder.get_usage_by_web,
     "get_rating_by_name": WebFinder.get_rating_by_name,
-
 }
 
 def case_default(json_input):
