@@ -15,7 +15,6 @@ messages = [
 switch_dict = {
     "get_web_link_by_name": WebFinder.get_web_link_by_name,
     "get_web_by_rating": WebFinder.get_web_by_rating,
-    "get_web_by_usage": WebFinder.get_web_by_usage,
     "get_usage_by_web": WebFinder.get_usage_by_web,
     "get_rating_by_name": WebFinder.get_rating_by_name,
 

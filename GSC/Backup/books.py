@@ -5,7 +5,7 @@ websites = [
         "name": "google",
         "link": "https://www.google.com",
         "about": "it is a search engine",
-        "usage": "search up information",
+        "usage": "information searching",
         "rating": 1
     },
     {
@@ -40,7 +40,7 @@ websites = [
         "name": "baidu",
         "link": "https://www.baidu.com",
         "about": "search engine",
-        "usage": "search up information",
+        "usage": "information searchung",
 
         "rating": 6
     },
@@ -64,6 +64,13 @@ websites = [
         "about": "information library",
         "usage": "learn new information",
         "rating": 9
+    },
+    {
+        "name": "pintrest",
+        "link": "https://www.pinterest.com",
+        "about": "image viewing site",
+        "usage": "get images",
+        "rating": 10
     }
 
 ]

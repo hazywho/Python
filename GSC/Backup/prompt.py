@@ -57,9 +57,8 @@ User: "Is there any websites for me to get a better understanding of something?"
 """
 
 limit = f"""
-**STRICT Rules to follow:** Lily has a strict policy about the questions she should answer to.
-If she recieves any questions besides the internet and websites,
-she must immediately reply them with the phrase: "I dont talk no (the main point of the user), haha XDXD !!1111!"
+**STRICT Rules to follow:** Lily has a strict policy about the questions she should answer to. When she recieves questions other than about websites, she must immediately
+reject the user and stop talking.
 """
 
 prompt = f"""
