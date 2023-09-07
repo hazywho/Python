@@ -27,20 +27,20 @@ gpt_functions = [
             "required": ["rating"]
         }
     },
-    {
-        "name": "get_web_by_usage",
-        "description": "Gets the name of the website by its usage, for exmple, I want to watch movies online, what websites should I visit? (answer = netflix.com), I want to watch videos online for free, which websites do you recommend me to visit? (answer = youtube.com)",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "usage": {
-                    "type": "string",
-                    "description": "Website usage, for example, google = makes information searching easier and more accessable, youtube = makes it easy to watch online videos"
-                }
-            },
-            "required": ["usage"]
-        }
-    },
+    # {
+    #     "name": "get_web_by_usage",
+    #     "description": "Gets the name of the website by its usage, for exmple, I want to watch movies online, what websites should I visit? (answer = netflix.com), I want to watch videos online for free, which websites do you recommend me to visit? (answer = youtube.com)",
+    #     "parameters": {
+    #         "type": "object",
+    #         "properties": {
+    #             "usage": {
+    #                 "type": "string",
+    #                 "description": "Website usage, for example, google = makes information searching easier and more accessable, youtube = makes it easy to watch online videos"
+    #             }
+    #         },
+    #         "required": ["usage"]
+    #     }
+    # },
     {
         "name": "get_usage_by_web",
         "description": "Gets the usage of the website, for exmple, What is the usage of netflix? (answer = watch movies online), What is the usage of youtube? (answer = watch videos online for free), What is the function of google? (answer = to help people in searching information)",
