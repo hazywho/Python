@@ -1,15 +1,12 @@
-import math
 x = input().split(" ")
-y = x[0]
-j = x[1]
-numb = int(x[0])
-
-for l in range(int(j)):
-    print(numb)
-    if str(numb)[len(str(numb))-1:] == "0":
-        numb = math.floor(numb/10)
+n = []
+for k in x: 
+    n.append(int(k))
+number = n[0]
+times = n[1]
+for _ in range(times):
+    if int(number/10) == number/10:
+        number = number/10
     else:
-        numb -= int(j)
-
-print(int(numb))
-
+        number -=1
+print(int(number))
