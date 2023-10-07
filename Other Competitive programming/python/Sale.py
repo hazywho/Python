@@ -7,5 +7,5 @@ for item in l:
 x.sort()
 for n in range(int(nm[-1])):
     if x[n]<=0:
-        total -= x[n]
+        total += abs(x[n])
 print(total)
