@@ -1,8 +1,3 @@
-def factorial(n):
-    if n > 1:
-        return n*factorial(n-1)
-    return n
-print(factorial(4))
 import math
 
 def is_prime(n):
@@ -22,6 +17,6 @@ def prime(n, div):
           prime(n,i)
           break
 
-n = 120
+n = 29
 prime(n,2)
 print()

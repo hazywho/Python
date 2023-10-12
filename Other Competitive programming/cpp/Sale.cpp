@@ -19,5 +19,5 @@ int main(){
             counts -= l[n];
         }
     }
-    cout << counts << endl;
+    cout << counts << endl; 
 }

@@ -8,3 +8,5 @@ def set_op(set):
 
 n = int(input())
 set_op(range(1,n+1))
+
+print()
