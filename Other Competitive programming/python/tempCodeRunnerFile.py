@@ -1,11 +1,6 @@
-nm = input()
-l = input().split(" ")
-x = []
-total = 0
-for item in l:
-    x.append(int(item))
-x.sort()
-for n in range(int(nm[-1])):
-    if x[n]<=0:
-        total -= x[n]
-print(total)
+for index,x in enumerate(decoded):
+#     if x == " ":
+#         if x == x[index+1]:
+#             print("YES")
+#             decoded = remove_letter(decoded,x)
+# print(decoded)
