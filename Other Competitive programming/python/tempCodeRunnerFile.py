@@ -1,2 +1,2 @@
 
-                break
+string.replace("B","L")
