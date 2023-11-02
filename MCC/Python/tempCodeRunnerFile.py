@@ -1,1 +1,2 @@
-1
+
+        x = list(map(int,line.split()))
