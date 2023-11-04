@@ -1,5 +1,5 @@
 import io
-with open(r"C:\Users\zanyi\OneDrive\Git hub\Python\MCC\Python\Collatztext.txt") as f:
+with open(r"C:\Users\zanyi\OneDrive\Git hub\Python\MCC\Real\Collatztext.txt") as f:
     for lines in f:
         a = list(map(int,lines.split(" ")))
 k = 798

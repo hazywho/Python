@@ -1,2 +1,2 @@
 
-        x = list(map(int,line.split()))
+a = dict(Counter(newy))
