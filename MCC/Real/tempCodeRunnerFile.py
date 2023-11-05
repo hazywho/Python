@@ -1,1 +1,2 @@
-f_al
+
+with open(r"C:\Users\zanyi\Downloads\inno5.txt") as f:

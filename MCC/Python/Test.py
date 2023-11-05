@@ -18,13 +18,16 @@ def all_subsets(arr):
     find_subsets(0, nums, [], ans_list)
     return ans_list
  
-n,k = 1000, 2
+n,k = 10, 2
 with open(r"C:\Users\zanyi\OneDrive\Git hub\Python\MCC\Python\subsets.txt") as f:
     for i in f:
         set = list(map(int,i.split(" ")))
-subsets = all_subsets(set)
+news = []
+for p in set:
+    news.append(p)
+subsets = all_subsets(news)
 count =0
 for subset in subsets:
     for numb in subset:
-        count += pow(numb,2,998244353)
+        count += pow(numb,k,998244353)
 print(count)

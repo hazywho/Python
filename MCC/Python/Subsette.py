@@ -12,9 +12,11 @@ def set_op(set):
   index = 0
   operate(set, subsets, subset, index)
   return subsets
-h,k = list(map(int,input().split()))
-n = list(map(int,input().split()))
-k = k
+with open(r"C:\Users\zanyi\OneDrive\Git hub\Python\MCC\Python\Subsette.py") as f:
+   for lines in f:
+      n = list(map(int,lines.split()))
+h,k = 10,1
+
 subsets = set_op(n)
 firstlist = []
 biglist = []

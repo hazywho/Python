@@ -1,4 +1,4 @@
-n,m = 30,3
+n,m = 2000, 1277
 df = []
 with open(r"C:\Users\zanyi\OneDrive\Git hub\Python\MCC\Real\innovation.txt") as f:
     for i in f:
