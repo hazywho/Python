@@ -1,2 +1,2 @@
-
-with open(r"C:\Users\zanyi\Downloads\inno5.txt") as f:
+from numba import jit, cuda
+import numpy as np
