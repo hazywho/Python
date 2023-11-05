@@ -1,4 +1,3 @@
-import io
 with open(r"C:\Users\zanyi\OneDrive\Git hub\Python\MCC\Real\Collatztext.txt") as f:
     for lines in f:
         a = list(map(int,lines.split(" ")))

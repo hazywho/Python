@@ -1,18 +1,15 @@
-n,k = list(map(int,input().split()))
-inp = input().split()
-r = []
-for letters in inp:
-    r.append(letters)
-import itertools
-new = []
-subsets = []
-newnew  = []
-for s in range(1,n+1):
-    subsets=(list(itertools.combinations(r,s)))
-    for i in subsets:
-        new.append(sorted(list(set(i))))
-    for m in new:
-        if m not in newnew:
-            newnew.append(m)
-        sorted(newnew)
-print(newnew)
+l = int(input())
+for _ in range(l):
+    x= input()
+    newx = []
+    for i in x:
+        newx.append(dict[int(i)])
+    newx.insert(0,0)
+    final = 0
+    for g in range(0,len(newx)-1):
+        final +=  abs(newx[g+1]-newx[g])
+    final += 4         
+    print(final)
+    
+
+

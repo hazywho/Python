@@ -13,8 +13,8 @@ def set_op(set):
   operate(set, subsets, subset, index)
   return subsets
 h,k = list(map(int,input().split()))
-n = list(map(str,input().split()))
-k = k%998244353
+n = list(map(int,input().split()))
+k = k
 subsets = set_op(n)
 firstlist = []
 biglist = []
@@ -28,11 +28,40 @@ for l in firstlist:
         newlest.append(int(er))
     biglist.append(newlest)
 for new in biglist:
-    total = 0
-    for numb in new:
-        total += numb
-    
-    summ += pow(total,k)
-print(summ)
+  total = 0
+  for numb in new:
+      total += numb
 
+  summ += total%998244353
+print(summ)
+biglist.sort()
+for i in biglist:
+   print(i)
+
+
+# def sublists(lst):
+#     n = len(lst)
+#     sublists = []
+     
+#     for start in range(n):
+#         for end in range(start + 1, n + 1):
+#             sublists.append(lst[start:end])
+     
+#     return sublists
+# a = 998244353
+
+# h,k = list(map(int,input().split()))
+# original_list = list(map(int,input().split()))
+# new = []
+# sublists_nested = sublists(original_list)
+# l = 0
+# new2 = []
+# for k in sublists_nested:
+#     c = 0
+#     for g in s:
+#          c+=pow(g,k)%a
+#     new2.append(c)
+# for num in new2:
+#     l+=num
+# print(l)
 

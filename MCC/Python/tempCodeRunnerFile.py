@@ -1,2 +1,1 @@
-
-a = dict(Counter(newy))
+pow(total,k)

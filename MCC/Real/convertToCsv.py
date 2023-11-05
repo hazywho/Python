@@ -6,7 +6,7 @@ with open(r"C:\Users\zanyi\OneDrive\Git hub\Python\MCC\Real\innovation.txt") as 
 
 # 2. Calculate the sum of the first two elements in each row, store them in a list,
 # and sort the rows based on this sum in ascending order, and then by the total four elements in descending order.
-row_sums = [(row[0] + row[1], sum(row), row) for row in matrix]
+row_sums = [(row[0] + row[1], sum(row), row) for row in matrix] # [[row_sum ,[row value,1,2,3,4]],[row_sum, [rowvalue, 1,2,3,4]]
 row_sums = sorted(row_sums, key=lambda x: (x[0], -sum(x[2])), reverse=True)
 
 # 3. Sum the first and second elements based on the top m-1 rows.
