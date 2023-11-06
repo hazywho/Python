@@ -23,7 +23,7 @@ def resultOfAllSubsets(N, K, A):
     result = result % MOD
  
     return result
-@jit(target_backend = 'cude')
+@jit(target_backend = 'cuda')
 def run(N,K,A):
     N, K = 10, 2
 

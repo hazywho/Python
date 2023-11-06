@@ -15,12 +15,12 @@ def func(A):
     all_combinations = [list(c) for c in all_combinations]    
     return all_combinations
 # function optimized to run on gpu  
-@jit(target_backend='cuda')                        
+# @jit(target_backend='cuda')                        
 def add(lst,k):
     result = 0
     # Print all combinations
     for c in lst:
-        result += sum(c) ** k
+        result += pow(sum(c),k)
     result = result % 998244353
     return result
 if __name__=="__main__":                        
