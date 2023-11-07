@@ -4,8 +4,6 @@ import numpy as np
 # to measure exec time
 from timeit import default_timer as timer   
 from itertools import combinations
- 
-# normal function to run on cpu
 @jit(target_backend='cuda')
 def func(A):
     all_combinations =  []                                
@@ -14,7 +12,6 @@ def func(A):
     # Convert the combinations to lists
     all_combinations = [list(c) for c in all_combinations]    
     return all_combinations
-# function optimized to run on gpu  
 # @jit(target_backend='cuda')                        
 def add(lst,k):
     result = 0

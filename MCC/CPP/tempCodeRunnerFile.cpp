@@ -1,2 +1,2 @@
 
-int main() {
+        int tmp = k, count = 1;
