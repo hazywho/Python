@@ -1,24 +1,23 @@
+//4021420   Jul 4, 2013 7:30:15 PM	fuwutu	 136A - Presents	 GNU C++0x	Accepted	15 ms	0 KB
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <string>
+
 using namespace std;
-int mian(){
-    int i;
-    cin >> i;
-    vector<int> gifts(i);
-    for(int&num:gifts){
-        cin >> num;
+
+int main()
+{
+    int n, p;
+    cin >> n;
+    vector<int> f(n);
+    for (int i = 1; i <= n; ++i)
+    {
+        cin >> p;
+        f[p-1] = i;
     }
-    int half = int(gifts.size()/2);
-    for(int i = 0; i<half; i++){
-        cout << gifts[i] << " ";
-    }
-    if(gifts.size()%2!=0){
-        cout << gifts[(gifts.size()-1)/2] <<  " ";
-    }
-    for(int last = gifts.size(); last<half; last--){
-        cout << gifts[last] << " ";
+    for (int i = 1; i <= n; ++i)
+    {
+        cout << f[i-1] << " ";
     }
     cout << endl;
+    return 0;
 }
