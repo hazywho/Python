@@ -7,4 +7,4 @@ for i in number:
     for _ in range(k):
         p = (p/2 if p%2==0 else 3*p+1)
     a+=p
-print(int(a))
+print(int(a))  
