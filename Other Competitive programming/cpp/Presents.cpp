@@ -9,14 +9,14 @@ int main()
     int n, p;
     cin >> n;
     vector<int> f(n);
-    for (int i = 1; i <= n; ++i)
+    for (int i = 0; i < n; ++i)
     {
         cin >> p;
-        f[p-1] = i;
+        f[p-1] = i+1;
     }
-    for (int i = 1; i <= n; ++i)
+    for (int i = 0; i < n; ++i)
     {
-        cout << f[i-1] << " ";
+        cout << f[i] << " ";
     }
     cout << endl;
     return 0;
