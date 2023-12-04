@@ -21,7 +21,7 @@
 
 # In[3]:
 import os
-path ="/home/hizy/Downloads/ht/images" # shows dialog box and return the path
+path ="/home/hezy/Downloads/ht/images" # shows dialog box and return the path
 print(path)
 os.chdir(path)
 from unittest.util import sorted_list_difference 
@@ -65,13 +65,14 @@ def run():
     while rotation < rs:
         camera = cv2.VideoCapture(0)
         return_value, image = camera.read()
+        cv2.imshow("test",image)
         cv2.imwrite(os.path.join(path,(str(rotation)+".jpg")), image)
         del(camera)
         mymotortest.motor_go(1, "Full", 1, 0.005, False, 0.01)
         image = cv2.imread(os.path.join(path,(str(rotation)+".jpg")))                      
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         fm = variance_of_laplacian(gray)
-        folder = "/home/hizy/Downloads/ht/placeholder"
+        folder = "/home/hazy/Downloads/ht/placeholder"
         num=str(round(fm*100)/100)+".jpg"
         cv2.imwrite(os.path.join(folder , num), image)
         rotation += 1
@@ -80,7 +81,7 @@ def run():
 
     # In[4]:
 def show():
-    path ="/home/hizy/Downloads/ht/placeholder"
+    path ="/home/hazy/Downloads/ht/placeholder"
     lst = []
         # loop over the input images
     for imagePath in paths.list_images(path):
@@ -101,17 +102,17 @@ def show():
         
     #type in placeholder folder directory
     print(lst)
-    folder = "/home/hizy/Downloads/ht/output"
+    folder = "/home/hazy/Downloads/ht/output"
     file_name = str(max(lst))+".jpg"
     print(file_name)
 
     new_name = os.path.join(folder, "new_base.jpg")
 
-    shutil.move("/home/hizy/Downloads/ht/placeholder/" + file_name, new_name )
+    shutil.move("/home/hazy/Downloads/ht/placeholder/" + file_name, new_name )
 
     
 def delete():
-    dir = "/home/hizy/Downloads/ht/placeholder"
+    dir = "/home/hazy/Downloads/ht/placeholder"
     for files in os.listdir(dir):
         path = os.path.join(dir, files)
         try:
@@ -119,7 +120,7 @@ def delete():
         except OSError:
            os.remove(path)
 
-    dirtwo = "/home/hizy/Downloads/ht/images"
+    dirtwo = "/home/hazy/Downloads/ht/images"
     for filestwo in os.listdir(dirtwo):
         pathtwo = os.path.join(dirtwo, filestwo)
         try:
