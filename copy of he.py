@@ -39,6 +39,7 @@ import time
 import math
 import tkinter
 from tkinter import messagebox
+import gradio as gr
 
 
 
@@ -53,7 +54,7 @@ def variance_of_laplacian(image):
     
 
 def run():
-    path ="/home/hizy/Downloads/ht/images"
+    path ="/home/hezy/Downloads/ht/images"
     
     GPIO_pins = (14,15,18)
     direction = 20
@@ -62,26 +63,27 @@ def run():
     mymotortest = RpiMotorLib.A4988Nema(direction, step, GPIO_pins, "A4988")
     rotation = 0
     rs = 20
-    while rotation < rs:
+    while rotation <= rs:
         camera = cv2.VideoCapture(0)
         return_value, image = camera.read()
-        cv2.imshow("test",image)
         cv2.imwrite(os.path.join(path,(str(rotation)+".jpg")), image)
         del(camera)
-        mymotortest.motor_go(1, "Full", 1, 0.005, False, 0.01)
+        mymotortest.motor_go(0, "Full", 2, 0.005, False, 0.01)
         image = cv2.imread(os.path.join(path,(str(rotation)+".jpg")))                      
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         fm = variance_of_laplacian(gray)
-        folder = "/home/hazy/Downloads/ht/placeholder"
+        folder = "/home/hezy/Downloads/ht/placeholder"
         num=str(round(fm*100)/100)+".jpg"
         cv2.imwrite(os.path.join(folder , num), image)
         rotation += 1
-    mymotortest.motor_go(0, "Full", rs, 0.005, False, 0.01)
+    mymotortest.motor_go(1, "Full", rs*2, 0.005, False, 0.01)
+    
+    return "images have been captured"
         
 
     # In[4]:
 def show():
-    path ="/home/hazy/Downloads/ht/placeholder"
+    path ="/home/hezy/Downloads/ht/placeholder"
     lst = []
         # loop over the input images
     for imagePath in paths.list_images(path):
@@ -98,21 +100,28 @@ def show():
         cv2.imshow("Image", image)
         key = cv2.waitKey(0)
         cv2.destroyAllWindows()
-        lst.append(round(fm*100)/100)
+        lst.append(fm)
         
     #type in placeholder folder directory
     print(lst)
-    folder = "/home/hazy/Downloads/ht/output"
+    folder = "/home/hezy/Downloads/ht/output"
     file_name = str(max(lst))+".jpg"
     print(file_name)
+    new_name = os.path.join(folder, file_name)
 
-    new_name = os.path.join(folder, "new_base.jpg")
-
-    shutil.move("/home/hazy/Downloads/ht/placeholder/" + file_name, new_name )
+    dirthree = "/home/hezy/Downloads/ht/output"
+    for filesthree in os.listdir(dirthree):
+        paththree = os.path.join(dirthree, filesthree)
+        try:
+            shutil.rmtree(paththree)
+        except OSError:
+           os.remove(paththree)
+    shutil.move("/home/hezy/Downloads/ht/placeholder/" + file_name, new_name )
+    return new_name
 
     
 def delete():
-    dir = "/home/hazy/Downloads/ht/placeholder"
+    dir = "/home/hezy/Downloads/ht/placeholder"
     for files in os.listdir(dir):
         path = os.path.join(dir, files)
         try:
@@ -120,21 +129,36 @@ def delete():
         except OSError:
            os.remove(path)
 
-    dirtwo = "/home/hazy/Downloads/ht/images"
+    dirtwo = "/home/hezy/Downloads/ht/images"
     for filestwo in os.listdir(dirtwo):
         pathtwo = os.path.join(dirtwo, filestwo)
         try:
             shutil.rmtree(pathtwo)
         except OSError:
            os.remove(pathtwo)
-    cv2.destroyAllWindows()
+    return "images have been deleted"
 
+#FUNCTIONS END HERE.
+    
+with gr.Blocks() as demo:
+    out1 = gr.Textbox(value = "", label = "IMG.cap Output")
+    out2 = gr.Textbox(value = "", label = "IMG.del Output")
+    imout1 = gr.Image()
 
-root = tkinter.Tk()
-b1 = tkinter.Button(root,text="add",command= run)
-b2 = tkinter.Button(root,text="show image",command= show)
-b3 = tkinter.Button(root,text="delete images",command= delete)
-b3.place(x=100,y=100)
-b1.place(x=20,y=20)
-b2.place(x=100,y=20)
-root.mainloop()
+    btn = gr.Button(value = "Start Taking Image")
+    btn.click(run,outputs=[out1])
+    btn2 = gr.Button(value = "Delete")
+    btn2.click(delete,outputs=[out2])
+    
+    showb = gr.Button(value = "Show img")
+    showb.click(show, outputs = [imout1])
+if __name__ == "__main__":
+    demo.launch(show_api=False)
+# root = tkinter.Tk()
+# b1 = tkinter.Button(root,text="add",command= run)
+# b2 = tkinter.Button(root,text="show image",command= show)
+# b3 = tkinter.Button(root,text="delete images",command= delete)
+# b3.place(x=100,y=100)
+# b1.place(x=20,y=20)
+# b2.place(x=100,y=20)
+# root.mainloop()
