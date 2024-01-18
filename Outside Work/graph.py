@@ -161,19 +161,21 @@ def makeGraph_line(show_output=False,input_path=r"C:\Users\zanyi\OneDrive\Git hu
         plt.show()
 
 def makeGraph_bar(input_path=r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\BarValues.csv",output_path = r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Output",name="BS10_Bar",
-                  from_to=[0,44],show_output=True, figsize=(20,20),line_interval = 7,show_dataframe=True,fileType=".jpg",fontsize=15,fontfamily="Arial",
+                  from_to=[0,44],show_output=True, figsize=(40,30),line_interval = 7,show_dataframe=True,fileType=".jpg",fontsize=15,fontfamily="Arial",
                 ):
+    plt.rcParams['font.size'] = 25
     df = pd.read_csv(input_path)
     items = df["Diagnostic ratios normative in bold"].iloc[from_to[0]:from_to[1]]
     values = df["relative difference %"].iloc[from_to[0]:from_to[1]]
+    print(values)
     df = pd.concat([values,items],axis = 1)
     df = df.sort_values(["relative difference %","Diagnostic ratios normative in bold"])
     if show_dataframe:
         print(df)
     plt.figure(figsize=figsize)
-    plt.barh(width=df["relative difference %"], y= df["Diagnostic ratios normative in bold"],color="Black")
+    plt.barh(width=df["relative difference %"], y= df["Diagnostic ratios normative in bold"],color="Black",)
     plt.title('Comparison of the normative ratios _ relative differance in %')
-    plt.ylabel("ratio",fontfamily=fontfamily,fontsize=fontsize,weight='bold')
+    plt.ylabel("ratio",fontfamily=fontfamily,fontsize=fontsize,weight='bold',)
     plt.xlabel("")
     plt.xticks(np.arange(0,values.max(),step=line_interval))
     plt.grid(axis='x')
