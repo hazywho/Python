@@ -22,3 +22,6 @@ for _ in range(testCases):
         if firstList[i] > SecondList[i]:
             pcount += 1
     print(count+pcount)
+
+    #works but need to convert to c++
+    
