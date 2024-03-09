@@ -1,28 +1,42 @@
 import pandas as pd
-#import excel spreadsheet and remove NAN values
+
+sample1ratio=1 #important (set sample index for ratio) sample number -1
+sample2ratio=2
+
+sample1BS10=1 #important (set sample index for normalising into BS10) sample number -1
+sample2BS10=2
+
+sample1Phy=1 #important (set sample index for normalising into Phytane) sample number -1
+sample2Phy=2
+
+sample1Hopane=1 #important (set sample index for normalising into Hopane) sample number -1
+sample2Hopane=3
+
+#import excel spreadsheet
 df = pd.read_excel(r"Copy of Oilcomp EN_200 MS xxxx_v110-Dr.Hii.xlsm", sheet_name="Database")
 df = df.iloc[9:154,]
 df.dropna()
 df = df.loc[:, (df != 0).all(axis=0)]
 print(df)
-df.to_csv('file2.csv', header=True, index=False) #for testing purposes only, please ignore this line
+df.to_csv('file2.csv', header=True, index=False)
 df.set_index("DATABASE",inplace=True)
 
-#rename columns
+#rename dataframe columns
 columnIndex = 0
 samplecount = 0
 for i in range(3,len(df.columns),2):
     df.columns.values[i-1]=f"sample{samplecount}Ret"
     df.columns.values[i]=f"sample{samplecount}Value"
     samplecount+=1
-print(df.loc["1_1-M-Adam"])
 
-#function to remove numbering at the front (eg: 1_1-M-Adam to 1-M-Adam)
+print(df.loc["1_1-M-Adam"])
+print(df)
+
+#declare important functions (normalisation, ratio, etc)
 def removeFN(string):
     string=string[string.find("_")+1:]
     return string
 
-#function to calculate ratio of compounds (1 sample only)
 def ratio(compound1,compound2,sample=0,Normative=True):
     print("Starting the ratio of "+compound1+" and "+compound2)
     if df.loc[compound1][f"sample{sample}Value"]>1 and df.loc[compound2][f"sample{sample}Value"]>1:
@@ -36,7 +50,28 @@ def ratio(compound1,compound2,sample=0,Normative=True):
         else:
             return [removeFN(compound1)+"/"+removeFN(compound2), 0.0001]
 
-#creating dataframes of ratios  
+def NormaliseToBS10(compound, sample1=1, sample2=2):
+    print("Normalising "+compound+" to BS10")
+    if df.loc["24_BS10"][f"sample{sample1}Value"]>1:
+        return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], df.loc[compound][f"sample{sample1}Value"]/df.loc["24_BS10"][f"sample{sample1}Value"]*df.loc["24_BS10"][f"sample{sample2}Value"]]
+    else:
+        return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], 0.001]
+    
+def NormaliseToPhytane(compound, sample1=1, sample2=2):
+    print("Normalising "+compound+" to Phytane")
+    if df.loc["33_Phy"][f"sample{sample1}Value"]>1:
+        return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], df.loc[compound][f"sample{sample1}Value"]/df.loc["33_Phy"][f"sample{sample1}Value"]*df.loc["33_Phy"][f"sample{sample2}Value"]]
+    else:
+        return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], 0.001]
+
+def NormaliseToHopane(compound, sample1=1, sample2=3):
+    print("Normalising "+compound+" to Hopane")
+    if df.loc["64_30ab"][f"sample{sample1}Value"]>1:
+        return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], df.loc[compound][f"sample{sample1}Value"]/df.loc["64_30ab"][f"sample{sample1}Value"]*df.loc["64_30ab"][f"sample{sample2}Value"]]
+    else:
+        return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], 0.001]
+    
+#declare function to run all set ratios
 def createRatio(sampleNo=0):
     NormarativeRatio=[]
     NormarativeRatio.append(ratio("1_1-M-Adam","2_1,2-DM-Adam",sampleNo))
@@ -124,14 +159,30 @@ def createRatio(sampleNo=0):
     fin = pd.concat([norm,infor])
     return [fin,infor,norm]
 
-#run the functions on 2 different samples.
-A=createRatio(1)[0]
-B=createRatio(2)[0]
+#run finctions and create DataFrames for each set of output
+A=createRatio(sample1ratio)[0]
+B=createRatio(sample2ratio)[0]
 A = A.assign(ratio2=B.loc[:,'ratio'])
 A.columns.values[1] = "A"
 A.columns.values[2] = "B"
 
-#calculate other values
+NormalisedToBS10=[]
+for rows in df.index:
+    NormalisedToBS10.append(NormaliseToBS10(rows,sample1BS10,sample2BS10))
+BS10DataFrame=pd.DataFrame(NormalisedToBS10,columns=[f"RetentionTime Sample {sample1BS10}", "Compounds", "A", "B", "NormalisedToBS10"])
+
+NormalisedToPhytane=[]
+for rows in df.index:
+    NormalisedToPhytane.append(NormaliseToPhytane(rows,sample1Phy,sample2Phy))
+PhytaneDataFrame=pd.DataFrame(NormalisedToPhytane,columns=[f"RetentionTime Sample {sample1Phy}", "Compounds", "A", "B", "NormalisedToPhytane"])
+
+NormalisedToHopane=[]
+for rows in df.index:
+    NormalisedToHopane.append(NormaliseToHopane(rows,sample1Hopane,sample2Hopane))
+HopaneDataFrame=pd.DataFrame(NormalisedToHopane,columns=[f"RetentionTime Sample {sample1Hopane}", "Compounds", "A", "B", "NormalisedToHopane"])
+
+#define and run function for computing new rows with different value
+#ratio
 def mean(row):
     return (row['A']+row['B'])/2
 def absDiff(row):
@@ -151,5 +202,41 @@ A['absoluteDifference'] = A.apply(absDiff,axis=1)
 A['relativeDifference%'] = A.apply(relDiff,axis=1)
 A['14%flag'] = A.apply(flagging,axis=1)
 
-#save csv file
-A.to_csv('output.csv')
+
+#normalise to BS10
+def AfterNorm2of3BS10(row):
+    if row["B"]>1:
+        return 100*row["NormalisedToBS10"]/row["B"]
+    else:
+        return 0.0001
+    
+BS10DataFrame["% 2/3 After Normalisation"]=BS10DataFrame.apply(AfterNorm2of3BS10, axis=1)
+print(BS10DataFrame)
+
+#normalise to Phytane
+def AfterNorm2of3Phy(row):
+    if row["B"]>1:
+        return 100*row["NormalisedToPhytane"]/row["B"]
+    else:
+        return 0.0001
+    
+PhytaneDataFrame["% 2/3 After Normalisation"]=PhytaneDataFrame.apply(AfterNorm2of3Phy, axis=1)
+print(PhytaneDataFrame)
+
+#normalise to Hopane
+def AfterNorm2of4Hopane(row):
+    if row["B"]>1:
+        return 100*row["NormalisedToHopane"]/row["B"]
+    else:
+        return 0.0001
+
+HopaneDataFrame["% 2/3 After Normalisation"]=HopaneDataFrame.apply(AfterNorm2of4Hopane, axis=1)
+print(HopaneDataFrame)
+
+print(A)
+
+#save down all dataframe as CSV
+BS10DataFrame.to_csv('BS10DataFrame.csv')
+PhytaneDataFrame.to_csv('PhytaneDataFrame.csv')
+HopaneDataFrame.to_csv('HopaneDataFrame.csv')
+A.to_csv('RatioDataFrame.csv')
