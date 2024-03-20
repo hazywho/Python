@@ -222,3 +222,15 @@ def createBS10Line( df,
     dir_path = os.path.dirname(os.path.realpath(__file__))
     plt.savefig(dir_path +"/"+ name)
     print(dir_path)
+
+def createBS10Bar(df,fromIndex = 0,toIndex = 44, name="test"):
+    plt.rcParams['font.size'] = 25
+    plt.figure(figsize=(40, 30))
+    plt.barh(width=df["relativeDifference%"].iloc[fromIndex:toIndex], y=df["Compounds"].iloc[fromIndex:toIndex],color="Black",)
+    plt.title('Comparison of the normative ratios _ relative differance in %')
+    plt.ylabel("ratio",fontfamily="Arial",fontsize=15,weight='bold',)
+    plt.xlabel("")
+    plt.xticks(np.arange(0,df["relativeDifference%"].iloc[fromIndex:toIndex].max(),step=7))
+    plt.grid(axis='x')
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    plt.savefig(dir_path +"/"+ name)  

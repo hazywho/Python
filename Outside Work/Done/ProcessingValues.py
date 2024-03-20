@@ -249,5 +249,8 @@ A.to_csv('RatioDataFrame.csv')
 #########################################################################################################################################################################################
 #create Normalised BS10 Line graph
 cBS10.createBS10Line(df=BS10DataFrame,name="BS10LineGraph.png")
+cBS10.createBS10Line(df=PhytaneDataFrame,name="PhytaneLineGraph.png")
+cBS10.createBS10Line(df=HopaneDataFrame,name="HopaneLineGraph.png")
 plt.show()
-
+cBS10.createBS10Bar(df=A, name="BarGraph.png")
+cBS10.createBS10Bar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png")
