@@ -95,8 +95,8 @@ def createBS10Line( df,
             rt_diam.append(datax)
             v_diam.append(datay)
         if indexCount>45 and indexCount<=49: #8
-            rt_tricyTerp=[]
-            v_tricyTerp=[]
+            rt_tricyTerp.append(datax)
+            v_tricyTerp.append(datay)
         if indexCount>49 and indexCount<=63: #9
             rt_hopa.append(datax)
             v_hopa.append(datay)
