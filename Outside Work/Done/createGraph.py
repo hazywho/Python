@@ -5,7 +5,7 @@ import pandas as pd
 import math
 import os
 
-def createBS10Line( df, 
+def createLine( df, 
                     name,
                     lineLowRet = -2,
                     lineHighRet=25,
@@ -223,14 +223,16 @@ def createBS10Line( df,
     plt.savefig(dir_path +"/"+ name)
     print(dir_path)
 
-def createBS10Bar(df,fromIndex = 0,toIndex = 44, name="test"):
+def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=True,ascending=True):  #toIndex is the index the graph stops #fromIndex is where the graph continues
+    if sort_values: df = df.iloc[fromIndex:toIndex].sort_values(["relativeDifference%"], ascending=ascending)
+    else: df = df.iloc[fromIndex:toIndex]
     plt.rcParams['font.size'] = 25
     plt.figure(figsize=(40, 30))
-    plt.barh(width=df["relativeDifference%"].iloc[fromIndex:toIndex], y=df["Compounds"].iloc[fromIndex:toIndex],color="Black",)
+    plt.barh(width=df["relativeDifference%"], y=df["Compounds"],color="Black",)
     plt.title('Comparison of the normative ratios _ relative differance in %')
     plt.ylabel("ratio",fontfamily="Arial",fontsize=15,weight='bold',)
     plt.xlabel("")
-    plt.xticks(np.arange(0,df["relativeDifference%"].iloc[fromIndex:toIndex].max(),step=7))
+    plt.xticks(np.arange(0,df["relativeDifference%"].max(),step=7))
     plt.grid(axis='x')
     dir_path = os.path.dirname(os.path.realpath(__file__))
     plt.savefig(dir_path +"/"+ name)  

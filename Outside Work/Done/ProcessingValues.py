@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import math
-import createBS10Graph as cBS10
+import createGraph as cG
 import os
 
 sample1ratio=1 #important (set sample index for ratio) sample number -1
@@ -248,9 +248,8 @@ A.to_csv('RatioDataFrame.csv')
 
 #########################################################################################################################################################################################
 #create Normalised BS10 Line graph
-cBS10.createBS10Line(df=BS10DataFrame,name="BS10LineGraph.png")
-cBS10.createBS10Line(df=PhytaneDataFrame,name="PhytaneLineGraph.png")
-cBS10.createBS10Line(df=HopaneDataFrame,name="HopaneLineGraph.png")
-plt.show()
-cBS10.createBS10Bar(df=A, name="BarGraph.png")
-cBS10.createBS10Bar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png")
+cG.createLine(df=BS10DataFrame,name="BS10LineGraph.png")
+cG.createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png")
+cG.createLine(df=HopaneDataFrame,name="HopaneLineGraph.png")
+cG.createBar(df=A, name="BarGraph.png",sort_values=False)
+cG.createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False)
