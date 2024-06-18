@@ -61,7 +61,6 @@ def run():
         camera = cv2.VideoCapture(0)
         return_value, image = camera.read()
         cv2.imwrite(os.path.join(path,(str(rotation)+".jpg")), image)
-        del(camera)
         mymotortest.motor_go(0, "Full", 1, 0.005, False, 0.01)
         image = cv2.imread(os.path.join(path,(str(rotation)+".jpg")))                      
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -71,7 +70,7 @@ def run():
         cv2.imwrite(os.path.join(folder , num), image)
         rotation += 1
     mymotortest.motor_go(1, "Full", rs, 0.005, False, 0.01)
-    
+    del(camera)
     return "images have been captured"
         
 def show():
