@@ -697,7 +697,7 @@ def DataForGasChromatogram():
         drawGasChromatogram(path=list(dir),show=True)
 
 
-button2 = ttk.Button(root, text="Show Chromatogram", command=drawGasChromatogram)
+button2 = ttk.Button(root, text="Show Chromatogram", command=DataForGasChromatogram)
 button2.grid(row=12, column=0, padx=5, pady=5)
 button1 = ttk.Button(root, text="Normalise", command=SelectDataForRatio)
 button1.grid(row=2, column=0, padx=5, pady=5)
