@@ -413,7 +413,7 @@ def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=True,ascen
     plt.savefig(dir_path +"/"+ name) if save else None
 
 #gas chromatogram line
-def drawGasChromatogram(path = [r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"],show=True,save=False,name="GasChrome"):
+def drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"],show=True,save=False,name="GasChrome"):
     fig,ax2 = plt.subplots()
     for i in path:
         fig,ax = plt.subplots()
@@ -432,9 +432,7 @@ def drawGasChromatogram(path = [r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside
 ###################################################################################################################################################################################################################################################################################
 
 #import data function
-def start(path=r"Copy of Oilcomp EN_200 MS xxxx_v110-Dr.Hii.xlsm", sheet_name="Database",search=False,log=False):
-    if search==True:
-        path = filedialog.askdirectory()
+def start(path=r"Copy of Oilcomp EN_200 MS xxxx_v110-Dr.Hii.xlsm", sheet_name="Database",log=False):
     df = pd.read_excel(path,sheet_name=sheet_name) 
     df = df.iloc[9:154,]
     df.dropna()
@@ -664,15 +662,44 @@ def Normalise(log=True,save=False):
         A.to_csv('RatioDataFrame.csv')
     return A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame
 
-df = start(path=r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\Copy of Oilcomp EN_200 MS xxxx_v110-Dr.Hii.xlsm")
-A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame = Normalise()
-createLine(df=BS10DataFrame,name="BS10LineGraph.png",save=True)
-createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True)
-createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True)
-createBar(df=A, name="BarGraph.png",sort_values=False,save=True)
-createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True)
-drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"]
-                    ,show=True,)
+# df = start(path=r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\Copy of Oilcomp EN_200 MS xxxx_v110-Dr.Hii.xlsm")
+# A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame = Normalise()
+# createLine(df=BS10DataFrame,name="BS10LineGraph.png",save=True)
+# createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True)
+# createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True)
+# createBar(df=A, name="BarGraph.png",sort_values=False,save=True)
+# createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True)
+# drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"]
+#                     ,show=True,)
 
 #################
 #tkinter message box
+root = tk.Tk()
+root.title("Main Menu")
+
+def SelectDataForRatio():
+    print("Button 1 pressed")
+    dir = filedialog.askopenfilename()
+    if dir:
+        global df
+        df = start(path=dir)
+        A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame = Normalise()
+        createLine(df=BS10DataFrame,name="BS10LineGraph.png",save=True)
+        createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True)
+        createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True)
+        createBar(df=A, name="BarGraph.png",sort_values=False,save=True)
+        createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True)
+
+def DataForGasChromatogram():
+    print("button 2 pressed")
+    dir = filedialog.askopenfilenames()
+    if dir:
+        drawGasChromatogram(path=list(dir),show=True)
+
+
+button2 = ttk.Button(root, text="Show Chromatogram", command=drawGasChromatogram)
+button2.grid(row=12, column=0, padx=5, pady=5)
+button1 = ttk.Button(root, text="Normalise", command=SelectDataForRatio)
+button1.grid(row=2, column=0, padx=5, pady=5)
+
+root.mainloop()
