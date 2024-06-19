@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import ValueStorage
 import pandas as pd
 import math
 import os
@@ -239,7 +238,7 @@ def createLine( df,
     v_FAME=[]
 
     #assigning values to compounds
-    for i in ValueStorage.PW_PlotValues:
+    for i in PW_PlotValues:
         datax, datay = find_value(i)
         if indexCount>= 1 and indexCount <= 4: #0
             rt_nCx.append(datax)
@@ -414,7 +413,7 @@ def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=True,ascen
     plt.savefig(dir_path +"/"+ name) if save else None
 
 #gas chromatogram line
-def drawGasChromatogram(path = [r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Data\1284sm.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Data\1282.csv"],show=True,save=False,name="GasChrome"):
+def drawGasChromatogram(path = [r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"],show=True,save=False,name="GasChrome"):
     fig,ax2 = plt.subplots()
     for i in path:
         fig,ax = plt.subplots()
@@ -665,12 +664,15 @@ def Normalise(log=True,save=False):
         A.to_csv('RatioDataFrame.csv')
     return A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame
 
-df = start()
+df = start(path=r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\Copy of Oilcomp EN_200 MS xxxx_v110-Dr.Hii.xlsm")
 A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame = Normalise()
 createLine(df=BS10DataFrame,name="BS10LineGraph.png",save=True)
 createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True)
 createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True)
 createBar(df=A, name="BarGraph.png",sort_values=False,save=True)
 createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True)
-drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Data\1284sm.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Data\1282.csv"]
-                    ,show=False,)
+drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"]
+                    ,show=True,)
+
+#################
+#tkinter message box
