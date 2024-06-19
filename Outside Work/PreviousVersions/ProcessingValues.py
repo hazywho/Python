@@ -4,7 +4,7 @@ import pandas as pd
 import math
 import DrawAndDifferencate as DrawDif
 import createGraph as cG
-import os
+from pathlib import Path
 
 sample1ratio=1 #important (set sample index for ratio) sample number -1
 sample2ratio=2
@@ -17,28 +17,29 @@ sample2Phy=2
 
 sample1Hopane=1 #important (set sample index for normalising into Hopane) sample number -1
 sample2Hopane=3
-
 #import excel spreadsheet
-df = pd.read_excel(r"Copy of Oilcomp EN_200 MS xxxx_v110-Dr.Hii.xlsm", sheet_name="Database")
-df = df.iloc[9:154,]
-df.dropna()
-df = df.loc[:, (df != 0).all(axis=0)]
-print(df)
-df.to_csv('file2.csv', header=True, index=False)
-df.set_index("DATABASE",inplace=True)
+def start(path=r"Copy of Oilcomp EN_200 MS xxxx_v110-Dr.Hii.xlsm", sheet_name="Database",search=False):
+    path,sheet_name = start()
+    df = pd.read_excel(path,sheet_name=sheet_name)
+    df = df.iloc[9:154,]
+    df.dropna()
+    df = df.loc[:, (df != 0).all(axis=0)]
+    print(df)
+    df.to_csv('file2.csv', header=True, index=False)
+    df.set_index("DATABASE",inplace=True)
+    #rename dataframe columns
+    columnIndex = 0
+    samplecount = 0
+    for i in range(3,len(df.columns),2):
+        df.columns.values[i-1]=f"sample{samplecount}Ret"
+        df.columns.values[i]=f"sample{samplecount}Value"
+        samplecount+=1
+    return df
 
-#rename dataframe columns
-columnIndex = 0
-samplecount = 0
-for i in range(3,len(df.columns),2):
-    df.columns.values[i-1]=f"sample{samplecount}Ret"
-    df.columns.values[i]=f"sample{samplecount}Value"
-    samplecount+=1
 
-print(df.loc["1_1-M-Adam"])
-print(df)
 
 #declare important functions (normalisation, ratio, etc)
+
 def removeFN(string):
     string=string[string.find("_")+1:]
     return string
@@ -254,3 +255,4 @@ cG.createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png")
 cG.createLine(df=HopaneDataFrame,name="HopaneLineGraph.png")
 cG.createBar(df=A, name="BarGraph.png",sort_values=False)
 cG.createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False)
+DrawDif.drawGasChromatogram()

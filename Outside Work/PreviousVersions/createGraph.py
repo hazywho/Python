@@ -16,6 +16,8 @@ def createLine( df,
                     dottedMinValue=5,
                     dottedMaxValue=100,
                     MaxTrendline=60,
+                    print=False,
+                    save=False
     ): 
     #define function to find compound information based on compound name
     def find_value(name: str):
@@ -179,7 +181,7 @@ def createLine( df,
                 dottedYvalue.append(dottedMaxValue)
             else:
                 dottedYvalue.append(dottedMinValue+((dottedMaxValue-dottedMinValue)/2)+(math.sin(math.radians(180*((i-dottedLowRet)/(dottedHighRet-dottedLowRet))-90))*((dottedMaxValue-dottedMinValue)/2)))
-    print(lineYvalue)
+    print(lineYvalue) if print else None
 
     #create dataframe for future use
     TrendLineStableCompounds = pd.DataFrame()
@@ -190,7 +192,7 @@ def createLine( df,
     TrendLineStableCompounds["dotted y value"]=dottedYvalue
 
     #show dataframe
-    print(TrendLineStableCompounds)
+    print(TrendLineStableCompounds) if print else None
 
     #assign variables to values on dataframe to plot
     x = TrendLineStableCompounds["ret time"]
@@ -220,10 +222,10 @@ def createLine( df,
         )
     plt.grid(axis = "y")
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    plt.savefig(dir_path +"/"+ name)
-    print(dir_path)
+    plt.savefig(dir_path +"/"+ name) if save else None
+    print(dir_path) if print else None
 
-def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=True,ascending=True):  #toIndex is the index the graph stops #fromIndex is where the graph continues
+def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=True,ascending=True,save=False):  #toIndex is the index the graph stops #fromIndex is where the graph continues
     if sort_values: df = df.iloc[fromIndex:toIndex].sort_values(["relativeDifference%"], ascending=ascending)
     else: df = df.iloc[fromIndex:toIndex]
     plt.rcParams['font.size'] = 25
@@ -235,4 +237,4 @@ def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=True,ascen
     plt.xticks(np.arange(0,df["relativeDifference%"].max(),step=7))
     plt.grid(axis='x')
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    plt.savefig(dir_path +"/"+ name)  
+    plt.savefig(dir_path +"/"+ name) if save else None
