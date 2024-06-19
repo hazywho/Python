@@ -398,7 +398,7 @@ def createLine( df,
         print(dir_path)
 
 #bar
-def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=True,ascending=False,save=False):  #toIndex is the index the graph stops #fromIndex is where the graph continues
+def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=False,ascending=True,save=False,show=True):  #toIndex is the index the graph stops #fromIndex is where the graph continues
     if sort_values: df = df.iloc[fromIndex:toIndex].sort_values(["relativeDifference%"], ascending=ascending)
     else: df = df.iloc[fromIndex:toIndex]
     plt.rcParams['font.size'] = 25
@@ -411,6 +411,7 @@ def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=True,ascen
     plt.grid(axis='x')
     dir_path = os.path.dirname(os.path.realpath(__file__))
     plt.savefig(dir_path +"/"+ name) if save else None
+    plt.show if show else None
 
 #gas chromatogram line
 def drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"],show=True,save=False,name="GasChrome"):
@@ -676,7 +677,8 @@ def Normalise(log=True,save=False):
 #tkinter message box
 root = tk.Tk()
 root.title("Main Menu")
-
+root.attributes('-fullscreen', True)
+#create BS10 graphh, Phytane Graph, Hopane Graph, Bar Graoh.
 def SelectDataForRatio():
     print("Button 1 pressed")
     dir = filedialog.askopenfilename()
@@ -688,18 +690,23 @@ def SelectDataForRatio():
         createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True)
         createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True)
         createBar(df=A, name="BarGraph.png",sort_values=False,save=True)
-        createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True)
+        createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True,show=True)
 
+#chromatogram
 def DataForGasChromatogram():
     print("button 2 pressed")
     dir = filedialog.askopenfilenames()
     if dir:
         drawGasChromatogram(path=list(dir),show=True)
 
-
+def end():
+    root.quit()
 button2 = ttk.Button(root, text="Show Chromatogram", command=DataForGasChromatogram)
 button2.grid(row=12, column=0, padx=5, pady=5)
 button1 = ttk.Button(root, text="Normalise", command=SelectDataForRatio)
 button1.grid(row=2, column=0, padx=5, pady=5)
+#exit the program button
+endButton= ttk.Button(root, text="Exit", command=end)
+endButton.grid(row=30, column=0, padx=5, pady=5)
 
 root.mainloop()
