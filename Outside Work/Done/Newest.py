@@ -188,7 +188,8 @@ def createLine( df,
                     MaxTrendline=60,
                     log=False,
                     save=False,
-                    show=False
+                    show=False,
+                    title = "A - B: Normalised to BS10",
     ): 
     #define function to find compound information based on compound name
     def find_value(name: str):
@@ -389,7 +390,7 @@ def createLine( df,
         loc='upper center', 
         bbox_to_anchor=(0.5,1.2),
         ncol = 6,
-        title = "A - B: Normalised to BS10",
+        title = title,
         fontsize = 9.4,
         )
     plt.grid(axis = "y")
@@ -404,19 +405,17 @@ def createLine( df,
 def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=False,ascending=True,save=False,show=True):  #toIndex is the index the graph stops #fromIndex is where the graph continues
     if sort_values: df = df.iloc[fromIndex:toIndex].sort_values(["relativeDifference%"], ascending=ascending)
     else: df = df.iloc[fromIndex:toIndex]
-    fig = Figure((40,30))
-    ax = fig.add_subplot()
     plt.rcParams['font.size'] = 25
-    ax.barh(width=df["relativeDifference%"], y=df["Compounds"],color="Black",)
-    ax.set_title('Comparison of the normative ratios _ relative differance in %')
-    ax.set_ylabel("ratio",fontfamily="Arial",fontsize=15,weight='bold',)
-    ax.set_xlabel("")
-    ax.set_xticks(np.arange(0,df["relativeDifference%"].max(),step=7))
+    plt.figure(figsize=(40, 30))
+    plt.barh(width=df["relativeDifference%"], y=df["Compounds"],color="Black",)
+    plt.title('Comparison of the normative ratios _ relative differance in %')
+    plt.ylabel("ratio",fontfamily="Arial",fontsize=15,weight='bold',)
+    plt.xlabel("")
+    plt.xticks(np.arange(0,df["relativeDifference%"].max(),step=7))
     plt.grid(axis='x')
     dir_path = os.path.dirname(os.path.realpath(__file__))
     plt.savefig(dir_path +"/"+ name) if save else None
     plt.show if show else None
-    return fig
 
 #gas chromatogram line
 def drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"],show=True,save=False,name="GasChrome"):
@@ -696,8 +695,8 @@ test = Image.open(r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\BS1
 test = ImageTk.PhotoImage(test)
 frame = Frame(root, width=10, height=10)
 frame.grid()
-frame.place(anchor='center', relx=0.6, rely=0.5)
-size=width,height
+frame.place(anchor='center', relx=0.65, rely=0.5)
+size=width/1.2,height/1.2
 label = tk.Label(frame,image=test)
 label.grid()
 
@@ -709,18 +708,18 @@ text_output.grid(row=60, padx=20, pady=20)
 def SelectDataForRatio():
     print("Button 1 pressed")
     dir = filedialog.askopenfilename()
+    
     if dir:
         global df
         df = start(path=dir)
         A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame = Normalise()
         #the figure variables below all contains values of the graph
-        fig1 = createLine(df=BS10DataFrame,name="BS10LineGraph.png",save=True)
-        fig2 = createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True)
-        fig3 = createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True)
-        fig4 = createBar(df=A, name="BarGraph.png",sort_values=False,save=True)
-        fig5 = createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True,show=True)
-        if fig5:
-            clear_and_insert_text(text_output, "Normalisation is done")
+        fig1 = createLine(df=BS10DataFrame,name="BS10LineGraph.png",save=True,title = "A - B: Normalised to BS10")
+        fig2 = createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True,title = "A - B: Normalised to Phytane")
+        fig3 = createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True,title = "A - B: Normalised to Hopane")
+        createBar(df=A, name="BarGraph.png",sort_values=False,save=True)
+        createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True,show=True)
+        clear_and_insert_text(text_output, "Normalisation is done")
 
 #chromatogram
 def DataForGasChromatogram():
@@ -732,7 +731,7 @@ def DataForGasChromatogram():
             clear_and_insert_text(text_output, "Gas Chromatogram is done")
 
 def load_images(): #working
-    global images, image_files, current_image_index
+    global image_files, current_image_index
 
     current_image_index=0
     # Open file dialog to select a directory
@@ -743,51 +742,40 @@ def load_images(): #working
                    if f.lower().endswith('.png')]
     
     # Load images using PIL
-    images = [Image.open(img_file) for img_file in image_files]
-    show(current_image_index)
-    print("ran LoadImages")
-
+    show(index=current_image_index)
 
 def show(index): #working
-    global label, current_image_index
-    try:
-        photo = images[index]
+    photo = Image.open(image_files[index])
+    if photo:
         photo.thumbnail(size, Image.Resampling.LANCZOS)
-    except IOError:
-        print("cannot create")
-    img = ImageTk.PhotoImage(photo)
-    # Create a Label Widget to display the text or Image
-    label.config(image=img)
-    label.grid()
-    print("ran show")
+        img = ImageTk.PhotoImage(photo)
+        # Create a Label Widget to display the text or Image
+        label.config(image=img)
+        label.image=img
+        print("ran show")
 
 def previousImage():
     global current_image_index
     
-    # Decrement the image index
-    current_image_index -= 1
-    
     # Wrap around if the index is less than zero
-    if current_image_index < 0:
-        current_image_index = len(images) - 1
+    if current_image_index > 0:
+        # Decrement the image index
+        current_image_index -= 1
     
     # Show the previous image
     show(current_image_index)
-    print("ran PrevImg")
 
 def nextImage():
     global current_image_index
     
-    # Increment the image index
-    current_image_index += 1
-    
+
     # Wrap around if the index exceeds the number of images
-    if current_image_index >= len(images):
-        current_image_index = 0
+    if current_image_index < len(image_files)-1:
+        #increment index
+        current_image_index += 1
     
     # Show the next image
     show(current_image_index)
-    print("ran nextImage")
 
 #additional functions
 def end():
@@ -804,11 +792,13 @@ button1 = ttk.Button(root, text="Normalise", command=SelectDataForRatio)
 button1.grid(row=2, column=0, padx=5, pady=5)
 showButton = ttk.Button(root, text="Show Images", command=load_images)
 showButton.grid(row=22, column=0, padx=5, pady=5)
+saves = ttk.Button(root, text="Save location", command=s)
+saves.grid(row=72, column=0, padx=5, pady=5)
 #image
 prevImg=ttk.Button(root, text="Show Previous", command=previousImage)
-prevImg.grid(row=12,column=20,padx=5,pady=5)
+prevImg.grid(row=2,column=111,padx=5,pady=5)
 nextImg=ttk.Button(root, text="Show Next", command=nextImage)
-nextImg.grid(row=22,column=20,padx=5,pady=5)
+nextImg.grid(row=12,column=111,padx=5,pady=5)
 #app
 endButton= ttk.Button(root, text="Exit", command=end) #exit the program button
 endButton.grid(row=40, column=0, padx=5, pady=5)
