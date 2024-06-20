@@ -7,7 +7,6 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from matplotlib.figure import Figure
 from tkinter import scrolledtext,Frame
 from PIL import Image,ImageTk
 
@@ -23,7 +22,7 @@ sample1Phy=1 #important (set sample index for normalising into Phytane) sample n
 sample2Phy=2
 
 sample1Hopane=1 #important (set sample index for normalising into Hopane) sample number -1
-sample2Hopane=3
+sample2Hopane=2
 
 PW_PlotValues = [
     "20_n-C15",
@@ -419,7 +418,8 @@ def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=False,asce
 
 #gas chromatogram line
 def drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"],show=True,save=False,name="GasChrome"):
-    fig,ax2 = plt.subplots()
+    fig2,ax2 = plt.subplots()
+    directory = os.path.dirname(os.path.abspath(__file__))
     for i in path:
         fig,ax = plt.subplots()
         name = Path(i).stem
@@ -429,10 +429,11 @@ def drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside W
         plt.title("Gas Chromatogram Results")
         ax.legend()
         ax2.set_title("Gas Chromatogram Comparison")
+        if save:
+            fig.savefig(directory+"/"+name)
     ax2.legend()
+    fig2.savefig(directory+"/"+"combined") if save else None
     plt.show() if show else None
-    if save:
-        plt.savefig(name)
     return fig
 
 ###################################################################################################################################################################################################################################################################################
@@ -708,7 +709,7 @@ text_output.grid(row=60, padx=20, pady=20)
 def SelectDataForRatio():
     print("Button 1 pressed")
     dir = filedialog.askopenfilename()
-    
+
     if dir:
         global df
         df = start(path=dir)
@@ -726,7 +727,7 @@ def DataForGasChromatogram():
     print("button 2 pressed")
     dir = filedialog.askopenfilenames()
     if dir:
-        fig = drawGasChromatogram(path=list(dir),show=False)
+        fig = drawGasChromatogram(path=list(dir),show=False,save=True)
         if fig:
             clear_and_insert_text(text_output, "Gas Chromatogram is done")
 
@@ -742,6 +743,7 @@ def load_images(): #working
                    if f.lower().endswith('.png')]
     
     # Load images using PIL
+    clear_and_insert_text(text_output, "Images loaded")
     show(index=current_image_index)
 
 def show(index): #working
@@ -764,10 +766,10 @@ def previousImage():
     
     # Show the previous image
     show(current_image_index)
+    clear_and_insert_text(text_output, f"Showing image {current_image_index+1}")
 
 def nextImage():
     global current_image_index
-    
 
     # Wrap around if the index exceeds the number of images
     if current_image_index < len(image_files)-1:
@@ -776,6 +778,7 @@ def nextImage():
     
     # Show the next image
     show(current_image_index)
+    clear_and_insert_text(text_output, f"Showing image {current_image_index+1}")
 
 #additional functions
 def end():
@@ -792,8 +795,6 @@ button1 = ttk.Button(root, text="Normalise", command=SelectDataForRatio)
 button1.grid(row=2, column=0, padx=5, pady=5)
 showButton = ttk.Button(root, text="Show Images", command=load_images)
 showButton.grid(row=22, column=0, padx=5, pady=5)
-saves = ttk.Button(root, text="Save location", command=s)
-saves.grid(row=72, column=0, padx=5, pady=5)
 #image
 prevImg=ttk.Button(root, text="Show Previous", command=previousImage)
 prevImg.grid(row=2,column=111,padx=5,pady=5)
@@ -802,5 +803,47 @@ nextImg.grid(row=12,column=111,padx=5,pady=5)
 #app
 endButton= ttk.Button(root, text="Exit", command=end) #exit the program button
 endButton.grid(row=40, column=0, padx=5, pady=5)
+
+
+##################################################################################################################################
+#select sample batches.
+fra = tk.Frame(root)
+fra.grid(padx=10, pady=10)
+
+# Description label
+description_label = tk.Label(fra, text="Sample 1 ratio and 2 ratio (input in this format: (1,2)")
+description_label.grid(row=76, column=0, padx=5, pady=5)
+# Text input box
+text_input = tk.Entry(fra, width=30)
+text_input.grid(row=77, column=1, padx=5, pady=5)
+#important variables
+sample1ratio,sample2ratio=tuple(map(int, text_input.split(',')))
+
+# Description label
+description_label2 = tk.Label(fra, text="Sample 1 BS10 and 2 BS10 (input in this format: (1,2)")
+description_label2.grid(row=86, column=0, padx=5, pady=5)
+# Text input box
+text_input2 = tk.Entry(fra, width=30)
+text_input2.grid(row=87, column=1, padx=5, pady=5)
+#important variables
+sample1BS10,sample2BS10=tuple(map(int, text_input2.split(',')))
+
+# Description label
+description_label3 = tk.Label(fra, text="Sample 1 Phy and 2 Phy (input in this format: (1,2)")
+description_label3.grid(row=96, column=0, padx=5, pady=5)
+# Text input box
+text_input3 = tk.Entry(fra, width=30)
+text_input3.grid(row=97, column=1, padx=5, pady=5)
+#important variables
+sample1Phy,sample2Phy=tuple(map(int, text_input3.split(',')))
+
+# Description label
+description_label4= tk.Label(fra, text="Sample 1 Hopane and 2 Hopane (input in this format: (1,2)")
+description_label4.grid(row=106, column=0, padx=5, pady=5)
+# Text input box
+text_input4= tk.Entry(fra, width=30)
+text_input4.grid(row=107, column=1, padx=5, pady=5)
+#important variables
+sample1Hopane,sample2Hopane=tuple(map(int, text_input4.split(',')))
 
 root.mainloop()
