@@ -418,10 +418,10 @@ def createBar(df,fromIndex = 0,toIndex = 44, name="test", sort_values=False,asce
 
 #gas chromatogram line
 def drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"],show=True,save=False,name="GasChrome"):
-    fig2,ax2 = plt.subplots()
+    fig2,ax2 = plt.subplots(figsize=(10,10))
     directory = os.path.dirname(os.path.abspath(__file__))
     for i in path:
-        fig,ax = plt.subplots()
+        fig,ax = plt.subplots(figsize=(10,10))
         name = Path(i).stem
         df = pd.read_csv(i)
         ax.plot(df["Time [ms]"],df["Intensity"],label=name)
@@ -432,7 +432,7 @@ def drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside W
         if save:
             fig.savefig(directory+"/"+name)
     ax2.legend()
-    fig2.savefig(directory+"/"+"combined") if save else None
+    fig2.savefig(directory+"/"+"12821284diff") if save else None
     plt.show() if show else None
     return fig
 
@@ -462,7 +462,7 @@ def removeFN(string):
     return string
 
 def ratio(compound1,compound2,sample=0,Normative=True):
-    print("Starting the ratio of "+compound1+" and "+compound2)
+    print("Starting the ratio of "+compound1+" and "+compound2, "sample", sample)
     if df.loc[compound1][f"sample{sample}Value"]>1 and df.loc[compound2][f"sample{sample}Value"]>1:
         if Normative:
             return ["NR-"+removeFN(compound1)+"/"+removeFN(compound2), 100*(df.loc[compound1][f"sample{sample}Value"]/df.loc[compound2][f"sample{sample}Value"])]
@@ -475,21 +475,21 @@ def ratio(compound1,compound2,sample=0,Normative=True):
             return [removeFN(compound1)+"/"+removeFN(compound2), 0.0001]
 
 def NormaliseToBS10(compound, sample1=1, sample2=2):
-    print("Normalising "+compound+" to BS10")
+    print("Normalising "+compound+" to BS10","sample", sample1,sample2)
     if df.loc["24_BS10"][f"sample{sample1}Value"]>1:
         return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], df.loc[compound][f"sample{sample1}Value"]/df.loc["24_BS10"][f"sample{sample1}Value"]*df.loc["24_BS10"][f"sample{sample2}Value"]]
     else:
         return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], 0.001]
     
 def NormaliseToPhytane(compound, sample1=1, sample2=2):
-    print("Normalising "+compound+" to Phytane")
+    print("Normalising "+compound+" to Phytane", "sample", sample1,sample2)
     if df.loc["33_Phy"][f"sample{sample1}Value"]>1:
         return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], df.loc[compound][f"sample{sample1}Value"]/df.loc["33_Phy"][f"sample{sample1}Value"]*df.loc["33_Phy"][f"sample{sample2}Value"]]
     else:
         return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], 0.001]
 
 def NormaliseToHopane(compound, sample1=1, sample2=3):
-    print("Normalising "+compound+" to Hopane")
+    print("Normalising "+compound+" to Hopane", "sample", sample1, sample2)
     if df.loc["64_30ab"][f"sample{sample1}Value"]>1:
         return [df.loc[compound][f"sample{sample1}Ret"], compound, df.loc[compound][f"sample{sample1}Value"], df.loc[compound][f"sample{sample2}Value"], df.loc[compound][f"sample{sample1}Value"]/df.loc["64_30ab"][f"sample{sample1}Value"]*df.loc["64_30ab"][f"sample{sample2}Value"]]
     else:
@@ -623,7 +623,7 @@ def AfterNorm2of4Hopane(row):
         return 0.0001
 
 #compile all normalisations
-def Normalise(log=True,save=False):
+def Normalise(log=False,save=False):
     #run finctions and create DataFrames for each set of output
     A=createRatio(sample1ratio)[0]
     B=createRatio(sample2ratio)[0]
@@ -637,17 +637,17 @@ def Normalise(log=True,save=False):
     NormalisedToBS10=[]
     for rows in df.index:
         NormalisedToBS10.append(NormaliseToBS10(rows,sample1BS10,sample2BS10))
-    BS10DataFrame=pd.DataFrame(NormalisedToBS10,columns=[f"RetentionTime Sample {sample1BS10}", "Compounds", "A", "B", "NormalisedToBS10"])
+    BS10DataFrame=pd.DataFrame(NormalisedToBS10,columns=[f"RetentionTime Sample 1", "Compounds", "A", "B", "NormalisedToBS10"])
 
     NormalisedToPhytane=[]
     for rows in df.index:
         NormalisedToPhytane.append(NormaliseToPhytane(rows,sample1Phy,sample2Phy))
-    PhytaneDataFrame=pd.DataFrame(NormalisedToPhytane,columns=[f"RetentionTime Sample {sample1Phy}", "Compounds", "A", "B", "NormalisedToPhytane"])
+    PhytaneDataFrame=pd.DataFrame(NormalisedToPhytane,columns=[f"RetentionTime Sample 1", "Compounds", "A", "B", "NormalisedToPhytane"])
 
     NormalisedToHopane=[]
     for rows in df.index:
         NormalisedToHopane.append(NormaliseToHopane(rows,sample1Hopane,sample2Hopane))
-    HopaneDataFrame=pd.DataFrame(NormalisedToHopane,columns=[f"RetentionTime Sample {sample1Hopane}", "Compounds", "A", "B", "NormalisedToHopane"])
+    HopaneDataFrame=pd.DataFrame(NormalisedToHopane,columns=[f"RetentionTime Sample 1", "Compounds", "A", "B", "NormalisedToHopane"])
 
     BS10DataFrame["% 2/3 After Normalisation"]=BS10DataFrame.apply(AfterNorm2of3BS10, axis=1)
     if log:
@@ -669,16 +669,6 @@ def Normalise(log=True,save=False):
         A.to_csv('RatioDataFrame.csv')
     return A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame
 
-# df = start(path=r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\Copy of Oilcomp EN_200 MS xxxx_v110-Dr.Hii.xlsm")
-# A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame = Normalise()
-# createLine(df=BS10DataFrame,name="BS10LineGraph.png",save=True)
-# createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True)
-# createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True)
-# createBar(df=A, name="BarGraph.png",sort_values=False,save=True)
-# createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True)
-# drawGasChromatogram(path=[r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1282.csv",r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\Data\1284sm.csv"]
-#                     ,show=True,)
-
 #################
 #tkinter message box
 root = tk.Tk()
@@ -692,13 +682,11 @@ height= root.winfo_screenheight()
 root.geometry("%dx%d" % (width, height))
 
 #create gallery
-test = Image.open(r"C:\Users\zanyi\OneDrive\Git hub\Python\Outside Work\Done\BS10LineGraph.png")
-test = ImageTk.PhotoImage(test)
 frame = Frame(root, width=10, height=10)
 frame.grid()
 frame.place(anchor='center', relx=0.65, rely=0.5)
 size=width/1.2,height/1.2
-label = tk.Label(frame,image=test)
+label = tk.Label(frame)
 label.grid()
 
 #create log on tkinter
@@ -714,10 +702,9 @@ def SelectDataForRatio():
         global df
         df = start(path=dir)
         A,BS10DataFrame,PhytaneDataFrame,HopaneDataFrame = Normalise()
-        #the figure variables below all contains values of the graph
-        fig1 = createLine(df=BS10DataFrame,name="BS10LineGraph.png",save=True,title = "A - B: Normalised to BS10")
-        fig2 = createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True,title = "A - B: Normalised to Phytane")
-        fig3 = createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True,title = "A - B: Normalised to Hopane")
+        createLine(df=BS10DataFrame,name="BS10LineGraph.png",save=True,title = "A - B: Normalised to BS10")
+        createLine(df=PhytaneDataFrame,name="PhytaneLineGraph.png",save=True,title = "A - B: Normalised to Phytane")
+        createLine(df=HopaneDataFrame,name="HopaneLineGraph.png",save=True,title = "A - B: Normalised to Hopane")
         createBar(df=A, name="BarGraph.png",sort_values=False,save=True)
         createBar(df=A,fromIndex=44, toIndex=len(A), name="BarGraph2.png",sort_values=False,save=True,show=True)
         clear_and_insert_text(text_output, "Normalisation is done")
@@ -804,46 +791,60 @@ nextImg.grid(row=12,column=111,padx=5,pady=5)
 endButton= ttk.Button(root, text="Exit", command=end) #exit the program button
 endButton.grid(row=40, column=0, padx=5, pady=5)
 
-
-##################################################################################################################################
+################################################################################################################################## experimental, delete if has probloem
 #select sample batches.
-fra = tk.Frame(root)
-fra.grid(padx=10, pady=10)
 
-# Description label
-description_label = tk.Label(fra, text="Sample 1 ratio and 2 ratio (input in this format: (1,2)")
-description_label.grid(row=76, column=0, padx=5, pady=5)
-# Text input box
-text_input = tk.Entry(fra, width=30)
-text_input.grid(row=77, column=1, padx=5, pady=5)
-#important variables
-sample1ratio,sample2ratio=tuple(map(int, text_input.split(',')))
+# Create a label with the question1
+question_label1 = tk.Label(root, text="sample _ ratio to sample _ (default=2,3)", font=("Arial", 10))
+question_label1.grid(pady=5)
+user_input1 = tk.Entry(root, font=("Arial", 8), width=30)
+user_input1.grid(pady=5)
 
-# Description label
-description_label2 = tk.Label(fra, text="Sample 1 BS10 and 2 BS10 (input in this format: (1,2)")
-description_label2.grid(row=86, column=0, padx=5, pady=5)
-# Text input box
-text_input2 = tk.Entry(fra, width=30)
-text_input2.grid(row=87, column=1, padx=5, pady=5)
-#important variables
-sample1BS10,sample2BS10=tuple(map(int, text_input2.split(',')))
+# Create a label with the question2
+question_label2 = tk.Label(root, text="sample _ , _ normalise to BS10 (default=2,3)", font=("Arial", 10))
+question_label2.grid(pady=5)
+user_input2 = tk.Entry(root, font=("Arial", 8), width=30)
+user_input2.grid(pady=5)
 
-# Description label
-description_label3 = tk.Label(fra, text="Sample 1 Phy and 2 Phy (input in this format: (1,2)")
-description_label3.grid(row=96, column=0, padx=5, pady=5)
-# Text input box
-text_input3 = tk.Entry(fra, width=30)
-text_input3.grid(row=97, column=1, padx=5, pady=5)
-#important variables
-sample1Phy,sample2Phy=tuple(map(int, text_input3.split(',')))
+# Create a label with the question
+question_label3 = tk.Label(root, text="sample _ , _ normalise to Phytane (default=2,3)", font=("Arial", 10))
+question_label3.grid(pady=5)
+user_input3 = tk.Entry(root, font=("Arial", 8), width=30)
+user_input3.grid(pady=5)
 
-# Description label
-description_label4= tk.Label(fra, text="Sample 1 Hopane and 2 Hopane (input in this format: (1,2)")
-description_label4.grid(row=106, column=0, padx=5, pady=5)
-# Text input box
-text_input4= tk.Entry(fra, width=30)
-text_input4.grid(row=107, column=1, padx=5, pady=5)
-#important variables
-sample1Hopane,sample2Hopane=tuple(map(int, text_input4.split(',')))
+# Create a label with the question
+question_label4 = tk.Label(root, text="sample _ , _ normalise to Hopane(default=2,3)", font=("Arial", 10))
+question_label4.grid(pady=5)
+user_input4 = tk.Entry(root, font=("Arial", 8), width=30)
+user_input4.grid(pady=5)
+
+def get_input():
+    global sample2Phy,sample1Phy,sample1ratio,sample2ratio,sample2Hopane,sample1Hopane,sample1BS10,sample2BS10
+    if user_input1.get():
+        sample1Phy,sample2Phy=tuple(map(int, user_input3.get().split(',')))
+        sample1Phy-=1
+        sample2Phy-=1
+        print(sample1Phy,sample2Phy)
+
+        sample1ratio,sample2ratio=tuple(map(int, user_input1.get().split(',')))
+        sample1ratio-=1
+        sample2ratio-=1
+        print(sample1ratio,sample2ratio)
+
+        sample1BS10,sample2BS10=tuple(map(int, user_input2.get().split(',')))
+        sample1BS10-=1
+        sample2BS10-=1
+        print(sample1BS10,sample2BS10)
+
+        sample1Hopane,sample2Hopane=tuple(map(int, user_input4.get().split(',')))
+        sample1Hopane-=1
+        sample2Hopane-=1
+        print(sample1Hopane,sample2Hopane)
+        clear_and_insert_text(text_output, f"Sample number submitted, sample input detected.")
+        return 0
+    clear_and_insert_text(text_output, f"No input found, returing to using defaults.")
+    
+submit_button = tk.Button(root, text="Submit", command=get_input, font=("Arial", 14))
+submit_button.grid(pady=5)
 
 root.mainloop()
