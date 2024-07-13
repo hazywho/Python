@@ -24,23 +24,12 @@ import os
 path ="/home/hezy/Downloads/ht/images" 
 print(path)
 os.chdir(path)
-from unittest.util import sorted_list_difference 
 from imutils import paths
 import cv2
-from tkinter import Tk
-from tkinter.filedialog import askdirectory
 from pathlib import Path
 import shutil
-import images
-import RPi.GPIO as GPIO
-import math
-from RpiMotorLib import RpiMotorLib
-import time
-import math
-import tkinter
-from tkinter import messagebox
+import RpiMotorLib
 import gradio as gr
-import re
 
 def variance_of_laplacian(image): 
     # compute the Laplacian of the image and then return the focus
@@ -53,13 +42,12 @@ def run():
     GPIO_pins = (14,15,18)
     direction = 20
     step = 21
-    distance = 80 
     mymotortest = RpiMotorLib.A4988Nema(direction, step, GPIO_pins, "A4988")
     rotation = 0
     rs = 30
     while rotation < rs:
         camera = cv2.VideoCapture(0)
-        return_value, image = camera.read()
+        ret, image = camera.read()
         cv2.imwrite(os.path.join(path,(str(rotation)+".jpg")), image)
         del(camera)
         mymotortest.motor_go(1, "Half", 1, 0.005, False, 0.01)
