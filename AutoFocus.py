@@ -28,7 +28,7 @@ from imutils import paths
 import cv2
 from pathlib import Path
 import shutil
-import RpiMotorLib
+from RpiMotorLib import RpiMotorLib
 import gradio as gr
 
 def variance_of_laplacian(image): 
