@@ -1,0 +1,19 @@
+#Create a program that takes in input, prints out input
+
+#Create a program that takes in 2 values in 2 lines, and output the sum of the values
+
+#Make a program that takes in 3 values and output a list containing those 3. (harder version: write the code in 5-7 lines)
+
+#Make a program that takes a password as input, then checks it with the stored password,and output true/false.
+
+#Replace a string(input) with something else. Example: INPUT: "PLe" OUTPUT: "PLS"
+
+#array 1st number + array last number + dnum(input)
+array = [2,2,3,4,5,6,7]
+dnum = float(input())
+
+print(array[0]+array[-1]+dnum)
+
+
+
+

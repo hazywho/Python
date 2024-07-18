@@ -1,0 +1,1 @@
+pow(total,k)

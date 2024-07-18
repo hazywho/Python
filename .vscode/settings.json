@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "ostream": "cpp",
+        "fstream": "cpp",
+        "iosfwd": "cpp",
+        "random": "cpp",
+        "iostream": "cpp"
+    },
+    "zenMode.fullScreen": false
+}
