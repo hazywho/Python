@@ -10,6 +10,11 @@ from pathlib import Path
 import shutil
 from RpiMotorLib import RpiMotorLib
 import gradio as gr
+from ultralytics import YOLO
+modelPath="/best.pt"
+imagePath = "/home/hezy/Downloads/ht/images"
+placeholderPath = "/home/hezy/Downloads/ht/placeholder"
+outputPath = "/home/hezy/Downloads/ht/output"
 
 def variance_of_laplacian(image): 
     # compute the Laplacian of the image and then return the focus
@@ -17,8 +22,7 @@ def variance_of_laplacian(image):
     return cv2.Laplacian(image, cv2.CV_64F).var()
 
 def run():
-    path = "/home/hezy/Downloads/ht/images"
-    
+    camera = cv2.VideoCapture(0)
     GPIO_pins = (14,15,18)
     direction = 20
     step = 21
@@ -27,22 +31,17 @@ def run():
     rs = 30
     while rotation < rs:
         ret, image = camera.read()
-        cv2.imwrite(os.path.join(path,(str(rotation)+".jpg")), image)
-        del(camera)
-        mymotortest.motor_go(1, "Half", 1, 0.005, False, 0.01)
-        image = cv2.imread(os.path.join(path,(str(rotation)+".jpg")))                      
+        cv2.imwrite(os.path.join(imagePath,(str(rotation)+".jpg")), image)
+        mymotortest.motor_go(1, "Half", 1, 0.005, False, 0.01)              
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         fm = variance_of_laplacian(gray)
-        folder = "/home/hezy/Downloads/ht/placeholder"
-        num=str(round(fm*100)/100)+".jpg"
-        cv2.imwrite(os.path.join(folder , num), image)
+        cv2.imwrite(os.path.join(placeholderPath , str(round(fm*100)/100)+".jpg"), image)
         rotation += 1
     mymotortest.motor_go(0, "Half", rs, 0.005, False, 0.01)
     
     return "images have been captured"
         
 def show():
-    path ="/home/hezy/Downloads/ht/placeholder"
     lst = []
         # loop over the input images
     for imageDir in paths.list_images(placeholderPath):
@@ -63,57 +62,66 @@ def show():
         
     #type in placeholder folder directory
     print(lst)
-    folder = "/home/hezy/Downloads/ht/output"
     file_name2 = str(max(lst))+".jpg_o"
     file_name = str(max(lst))+".jpg"
     print(file_name)
     new_name = os.path.join(outputPath, file_name)
     new_name2 = os.path.join(outputPath, file_name2)
 
-    dirthree = "/home/hezy/Downloads/ht/output"
-    for filesthree in os.listdir(dirthree):
-        paththree = os.path.join(dirthree, filesthree)
+    for filesthree in os.listdir(outputPath):
+        paththree = os.path.join(outputPath, filesthree)
         try:
             shutil.rmtree(paththree)
         except OSError:
-           os.remove(paththree)
-    shutil.copyfile("/home/hezy/Downloads/ht/placeholder/" + file_name, new_name )
-    shutil.copyfile("/home/hezy/Downloads/ht/placeholder/" + file_name2, new_name2 )
+            os.remove(paththree)
+    shutil.copyfile(placeholderPath + file_name, new_name )
+    shutil.copyfile(placeholderPath + file_name2, new_name2 )
     storage = []
-    for itemsPath in paths.list_images("/home/hezy/Downloads/ht/placeholder"):
+    for itemsPath in paths.list_images(placeholderPath):
         storage.append(itemsPath)
     print(storage)
     return storage
     
 def delete():
-    dir = "/home/hezy/Downloads/ht/placeholder"
-    for files in os.listdir(dir):
-        path = os.path.join(dir, files)
+    for files in os.listdir(placeholderPath):
+        filePath = os.path.join(placeholderPath, files)
         try:
             shutil.rmtree(filePath)
         except OSError:
            os.remove(filePath)
 
-    dirtwo = "/home/hezy/Downloads/ht/images"
-    for filestwo in os.listdir(dirtwo):
-        pathtwo = os.path.join(dirtwo, filestwo)
+    for filestwo in os.listdir(imagePath):
+        filePath2 = os.path.join(imagePath, filestwo)
         try:
             shutil.rmtree(filePath2)
         except OSError:
            os.remove(filePath2)
     return "images have been deleted"
+
+def detectAndSave():
+    model = YOLO(modelPath)
+    for imges in os.listdir(outputPath):
+        predictImg = cv2.imread(imges)
+    prediction = model.predict(source=predictImg)
+    
+    try:
+        return f"detected cancer cell: {[prediction[0].names[val] for val in list(set(prediction[0].boxes.cls.tolist()))]}"
+    except ValueError:
+        return "no cancer cell detected"
 #FUNCTIONS END HERE.
     
 with gr.Blocks() as demo:
     out1 = gr.Textbox(value = "", label = "IMG.capture Log")
     out2 = gr.Textbox(value = "", label = "IMG.delete Log")
+    out3 = gr.Textbox(value="", label= "Prediction output")
     gallery = gr.Gallery(show_label=True, elem_id = "gallery", object_fit="contain")
     btn = gr.Button(value = "Start Taking Image")
     btn.click(run,outputs=[out1])
     showb = gr.Button(value = "Show image")
     showb.click(show, outputs = [gallery])
     btn2 = gr.Button(value = "Delete")
-    btn2.click(delete,outputs=out2) 
-    btn2.click(clear,outputs=[gallery])
+    btn2.click(delete,outputs=out2)
+    btn2.click(delete,outputs=gallery) 
+    predictBtn = gr.Button(value= "Predict on current image")
+    predictBtn.click(detectAndSave,outputs=out3)
     demo.launch(show_api=False)
-
