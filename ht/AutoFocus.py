@@ -1,25 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-#pip install imutils
-
-
-# In[2]:
-
-
-#pip install TK
-
-
-# In[2]:
-
-
-#pip install opencv-python
-
-
-# In[3]:
 import os
 from imutils import paths
 import cv2
@@ -29,8 +7,6 @@ from RpiMotorLib import RpiMotorLib
 import gradio as gr
 
 def variance_of_laplacian(image): 
-    # compute the Laplacian of the image and then return the focus
-    # measure, which is simply the variance of the Laplacian
     return cv2.Laplacian(image, cv2.CV_64F).var()
 
 def run():
